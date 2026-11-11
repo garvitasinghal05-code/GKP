@@ -1,0 +1,190 @@
+/* DESTINATION: src/app/globals.css  (replaces the existing file) */
+@import "tailwindcss";
+
+/* ───────────────────────── LIGHT MODE (baseline tokens) ───────────────────────── */
+:root {
+  --teal-1: #0B4438;   /* Main brand: buttons, headings, links */
+  --teal-2: #0D5C4A;   /* Hover / focus states */
+  --gold:   #F2C230;   /* Small, rare highlights: cart count, key CTA */
+  --mint:   #EFF7F3;   /* Soft teal tint: selected states, info boxes */
+  --page:   #F6F9F8;   /* Page background */
+  --line:   #E3E9E6;   /* Borders & dividers */
+  --ink:    #14231F;   /* Body text */
+  --muted:  #5F6F6A;   /* Secondary text */
+  --danger: #C1440E;   /* Delete / warning actions */
+  --ok:     #1E8E5A;   /* Success / valid status */
+
+  /* Extra tokens the app needs (derived from the ones above) */
+  --surface:      #FFFFFF;   /* cards */
+  --heading:      #0B4438;   /* heading + link text */
+  --hero-from:    #0B4438;
+  --hero-to:      #0D5C4A;
+  --danger-bg:    #FBE6DD;
+  --danger-solid: #C1440E;   /* solid red used on delete-button hover */
+  --ok-bg:        #E6F5EC;
+  --warn:         #B8860B;
+  --warn-bg:      #FDF3D7;
+  --shadow:       rgba(11, 68, 56, .10);
+  color-scheme: light;
+}
+
+/* ───────────────────────── DARK MODE ─────────────────────────
+   Switched by <html data-theme="dark">. Same token names, new values,
+   so every component adapts without changes. */
+:root[data-theme="dark"] {
+  --teal-1: #1A7F68;
+  --teal-2: #23987E;
+  --gold:   #F2C230;
+  --mint:   #16302A;
+  --page:   #0A1210;
+  --line:   #243730;
+  --ink:    #E7F1ED;
+  --muted:  #98ADA5;
+  --danger: #FF8A5C;
+  --ok:     #4CC98C;
+
+  --surface:      #111E1A;
+  --heading:      #CFEFE4;
+  --hero-from:    #0F3A31;
+  --hero-to:      #17594A;
+  --danger-bg:    #3A1F16;
+  --danger-solid: #C2461F;
+  --ok-bg:        #12301F;
+  --warn:         #E5B94A;
+  --warn-bg:      #33290F;
+  --shadow:       rgba(0, 0, 0, .45);
+  color-scheme: dark;
+}
+
+/* Lets you write bg-surface, text-heading, border-line, text-muted ... */
+@theme inline {
+  --color-brand: var(--teal-1);
+  --color-brand-2: var(--teal-2);
+  --color-gold: var(--gold);
+  --color-mint: var(--mint);
+  --color-page: var(--page);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-danger: var(--danger);
+  --color-ok: var(--ok);
+  --color-surface: var(--surface);
+  --color-heading: var(--heading);
+  --color-ok-bg: var(--ok-bg);
+  --color-danger-bg: var(--danger-bg);
+  --color-warn: var(--warn);
+  --color-warn-bg: var(--warn-bg);
+}
+
+html { -webkit-text-size-adjust: 100%; }
+
+@layer base {
+  body {
+    background: var(--page);
+    color: var(--ink);
+    font-family: var(--font-body), system-ui, -apple-system, 'Segoe UI', sans-serif;
+    line-height: 1.5;
+  }
+  h1, h2, h3 {
+    font-family: var(--font-display), var(--font-body), system-ui, sans-serif;
+    color: var(--heading);
+    letter-spacing: -0.01em;
+  }
+  :focus-visible { outline: 2px solid var(--teal-2); outline-offset: 2px; }
+  ::placeholder { color: var(--muted); opacity: .7; }
+}
+
+@layer components {
+  .font-display { font-family: var(--font-display), var(--font-body), system-ui, sans-serif; }
+
+  .hero-bg { background: linear-gradient(135deg, var(--hero-from), var(--hero-to)); }
+
+  /* White (dark: deep green) surface card with a light border */
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; }
+  .card-link { transition: box-shadow .18s, border-color .18s, transform .18s; }
+  .card-link:hover {
+    border-color: var(--teal-2);
+    box-shadow: 0 10px 28px var(--shadow);
+    transform: translateY(-2px);
+  }
+
+  /* A text / select box */
+  .field {
+    background: var(--surface); color: var(--ink);
+    border: 1.5px solid var(--line); border-radius: 10px;
+    padding: .55rem .8rem; font-size: .9rem; width: 100%;
+    transition: border-color .15s, box-shadow .15s;
+  }
+  .field:focus { outline: none; border-color: var(--teal-2); box-shadow: 0 0 0 3px var(--mint); }
+
+  /* Pill buttons that can be switched on (filters, location choices) */
+  .chip {
+    display: inline-flex; align-items: center; gap: .45rem;
+    padding: .5rem 1rem; border-radius: 999px;
+    font-size: .85rem; font-weight: 600; white-space: nowrap; cursor: pointer;
+    background: var(--surface); color: var(--ink); border: 1.5px solid var(--line);
+    transition: background .15s, color .15s, border-color .15s;
+  }
+  .chip:hover { background: var(--mint); border-color: var(--teal-2); }
+  .chip.is-active, .chip[aria-pressed="true"] { background: var(--teal-1); border-color: var(--teal-1); color: #fff; }
+  .chip.is-active:hover, .chip[aria-pressed="true"]:hover { background: var(--teal-2); border-color: var(--teal-2); }
+
+  /* A card you can pick (delivery type, payment type, saved address) */
+  .pick-card {
+    background: var(--surface); color: var(--ink);
+    border: 1.5px solid var(--line); border-radius: 14px; cursor: pointer; text-align: left;
+    transition: background .15s, border-color .15s, color .15s;
+  }
+  .pick-card:hover { background: var(--mint); border-color: var(--teal-2); }
+  .pick-card.is-selected { background: var(--teal-1); border-color: var(--teal-1); color: #fff; }
+  .pick-card.is-selected:hover { background: var(--teal-2); border-color: var(--teal-2); }
+  .pick-card.is-selected .text-muted { color: rgba(255, 255, 255, .8); }
+
+  /* Top-bar links */
+  .nav-link {
+    padding: .4rem .75rem; border-radius: 999px; color: var(--ink);
+    font-weight: 500; white-space: nowrap; transition: background .15s, color .15s;
+  }
+  .nav-link:hover { background: var(--mint); color: var(--heading); }
+
+  /* Logo swap: light file in light mode, dark file in dark mode */
+  .logo-light { display: block; }
+  .logo-dark  { display: none; }
+  .theme-icon-dark { display: none; }
+}
+
+:root[data-theme="dark"] .logo-light { display: none; }
+:root[data-theme="dark"] .logo-dark  { display: block; }
+:root[data-theme="dark"] .theme-icon-light { display: none; }
+:root[data-theme="dark"] .theme-icon-dark  { display: block; }
+
+/* MAP FIX: Leaflet gives its layers very high z-index numbers. Making the map its own
+   stacking box keeps those numbers inside the map, so it can never cover the navbar. */
+.leaflet-container { isolation: isolate; z-index: 0; }
+
+/* Inputs follow the theme everywhere, including older pages */
+input, select, textarea { color: var(--ink); }
+input:not([type="checkbox"]):not([type="radio"]):not([type="file"]), select, textarea {
+  background-color: var(--surface);
+}
+
+/* Safety net: older pages still use plain Tailwind greys / white. In dark mode these
+   are re-mapped so nothing is a glaring white box. */
+:root[data-theme="dark"] .bg-white { background-color: var(--surface); }
+:root[data-theme="dark"] .bg-gray-50,
+:root[data-theme="dark"] .bg-gray-100 { background-color: var(--mint); }
+:root[data-theme="dark"] .border-gray-200,
+:root[data-theme="dark"] .border-gray-100 { border-color: var(--line); }
+:root[data-theme="dark"] .text-gray-400,
+:root[data-theme="dark"] .text-gray-500,
+:root[data-theme="dark"] .text-gray-600 { color: var(--muted); }
+:root[data-theme="dark"] .text-gray-900 { color: var(--ink); }
+:root[data-theme="dark"] .text-red-600,
+:root[data-theme="dark"] .text-red-700 { color: var(--danger); }
+:root[data-theme="dark"] .bg-red-50 { background-color: var(--danger-bg); }
+:root[data-theme="dark"] .border-red-200 { border-color: var(--danger); }
+:root[data-theme="dark"] .text-green-700 { color: var(--ok); }
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
